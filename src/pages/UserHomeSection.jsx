@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Heading from "../components/Heading";
 
 const UserHomeSection = () => {
   const [users, setUsers] = useState([]);
@@ -27,26 +27,10 @@ const UserHomeSection = () => {
 
   return (
     <div className="flex-col space-y-6 justify-center items-center">
-      <h1 className="text-4xl font-bold text-center text-lime-950">
-        Generation Thailand <br />
-        React Assessment -{" "}
-        <span className="text-lime-600 font-semibold">User Section</span>
-      </h1>
-      <div className="flex space-x-4 justify-center items-center">
-        <Link to="/user-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">
-            User Home Section
-          </button>
-        </Link>
-        <Link to="/admin-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">
-            Admin Home Section
-          </button>
-        </Link>
-      </div>
+      <Heading section="User Section" />
+      {loading && <p className="text-lime-950 text-center">Loading...</p>}
+      {error && <p className="text-lime-950 text-center">{error}</p>}
       <div className="flex justify-center">
-        {loading && <p className="text-lime-950">Loading...</p>}
-        {error && <p className="text-lime-950">{error}</p>}
         <table className="border-collapse border border-lime-800 mt-4">
           <thead>
             <tr className="bg-lime-700 text-lime-100">
@@ -62,7 +46,7 @@ const UserHomeSection = () => {
           <tbody>
             {users.length > 0
               ? users.map((user) => (
-                  <tr key={user.id} className="text-lime-900 bg-lime-100">
+                  <tr key={user.id} className="text-lime-900 bg-lime-100 h-8">
                     <td className="border border-lime-800 px-4 py-2">
                       {user.name}
                     </td>

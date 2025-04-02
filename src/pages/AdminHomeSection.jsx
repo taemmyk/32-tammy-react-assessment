@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Heading from "../components/Heading";
 
 const AdminHomeSection = () => {
   const [users, setUsers] = useState([]);
@@ -26,7 +27,7 @@ const AdminHomeSection = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [users]);
 
   const handleAddUsers = async () => {
     let validName = name.replace(/\s+/g, " ").trim();
@@ -47,24 +48,31 @@ const AdminHomeSection = () => {
           position: validPosition,
         }
       );
-      setUsers([...users, res.data]);
-
+      setUsers((prevUsers) => [
+        ...prevUsers,
+        {
+          id: res.data.id,
+          name: validName,
+          lastName: validLastName,
+          position: validPosition,
+        },
+      ]);
       setName("");
       setLastName("");
       setPosition("");
-      alert(`${validName} has been added to database.`);
+      // alert(`${validName} has been added to database.`);
     } catch (error) {
       console.error("Error adding users", error);
     }
   };
 
   const handleRemoveUsers = async (id) => {
-    const targetUser = users.find(user => user.id === id);
+    const targetUser = users.find((user) => user.id === id);
     if (!targetUser) return;
     try {
       await axios.delete(`https://jsd5-mock-backend.onrender.com/member/${id}`);
-      setUsers(users.filter(user => user.id !== id)); // update on ui instantly while letting backend deleting entry.
-      alert(`${targetUser.name} has been deleted.`);
+      setUsers(users.filter((user) => user.id !== id)); // update on ui instantly while letting backend deleting entry.
+      // alert(`${targetUser.name} has been deleted.`);
     } catch (error) {
       console.error("Error deleting user", error);
     }
@@ -72,23 +80,7 @@ const AdminHomeSection = () => {
 
   return (
     <div className="flex-col space-y-6 justify-center items-center">
-      <h1 className="text-4xl font-bold text-center text-lime-950">
-        Generation Thailand <br />
-        React Assessment -
-        <span className="text-lime-600 font-semibold"> Admin Section</span>
-      </h1>
-      <div className="flex space-x-4 justify-center items-center">
-        <Link to="/user-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">
-            User Home Section
-          </button>
-        </Link>
-        <Link to="/admin-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">
-            Admin Home Section
-          </button>
-        </Link>
-      </div>
+      <Heading section="Admin Section" />
       <div className="flex-col bg-emerald-300 p-4 rounded-2xl">
         <h2 className="text-lg font-bold">Create User Here</h2>
         <div className="flex justify-center items-center">
@@ -129,12 +121,12 @@ const AdminHomeSection = () => {
           </div>
         </div>
       </div>
+      {loading && <p className="text-lime-950 text-center">Loading...</p>}
+      {error && <p className="text-lime-950 text-center">{error}</p>}
       <div className="flex justify-center">
-        {loading && <p className="text-lime-950">Loading...</p>}
-        {error && <p className="text-lime-950">{error}</p>}
         <table className="border-collapse border border-lime-800 mt-4">
           <thead>
-            <tr className="bg-lime-700 text-lime-100">
+            <tr className="bg-lime-700 text-lime-100 h-8">
               <th className="border border-lime-800 px-4 py-2 w-1/3">Name</th>
               <th className="border border-lime-800 px-4 py-2 w-1/3">
                 Last Name
@@ -161,7 +153,7 @@ const AdminHomeSection = () => {
                     <td className="border border-lime-800 px-4 py-2">
                       <button
                         onClick={() => handleRemoveUsers(user.id)}
-                        className="px-2 py-1 bg-pink-600 text-pink-100 rounded-md hover:bg-pink-800"
+                        className="px-2 py-1 bg-pink-600 text-pink-100 rounded-xl hover:bg-pink-800"
                       >
                         Delete
                       </button>
