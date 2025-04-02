@@ -28,7 +28,35 @@ const AdminHomeSection = () => {
     fetchUsers();
   }, []);
 
-  const handleAddUsers = async () => {};
+  const handleAddUsers = async () => {
+    let validName = name.replace(/\s+/g, " ").trim();
+    let validLastName = lastName.replace(/\s+/g, " ").trim();
+    let validPosition = position.replace(/\s+/g, " ").trim();
+
+    if (!validName || !validLastName || !validPosition) {
+      alert("Name, last name and position cannot be left empty.");
+      return;
+    }
+
+    try {
+      const res = await axios.post(
+        "https://jsd5-mock-backend.onrender.com/members",
+        {
+          name: validName,
+          lastname: validLastName,
+          position: validPosition,
+        }
+      );
+      setUsers([...users, res.data]);
+
+      setName("");
+      setLastName("");
+      setPosition("");
+      alert(`${validName} has been added to database`);
+    } catch (error) {
+      console.error("Error adding users", error);
+    }
+  };
 
   const handleRemoveUsers = async (id) => {};
 
@@ -60,7 +88,7 @@ const AdminHomeSection = () => {
               placeholder="Name"
               value={name}
               onChange={(e) => {
-                e.target.value;
+                setName(e.target.value);
               }}
               className="border border-lime-800 bg-lime-100 px-4 py-2 rounded-xl"
             />
@@ -69,7 +97,7 @@ const AdminHomeSection = () => {
               placeholder="Last Name"
               value={lastName}
               onChange={(e) => {
-                e.target.value;
+                setLastName(e.target.value);
               }}
               className="border border-lime-800 bg-lime-100 px-4 py-2 rounded-xl"
             />
@@ -77,12 +105,15 @@ const AdminHomeSection = () => {
               type="text"
               placeholder="Position"
               onChange={(e) => {
-                e.target.value;
+                setPosition(e.target.value);
               }}
               value={position}
               className="border border-lime-800 bg-lime-100 px-4 py-2 rounded-xl"
             />
-            <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">
+            <button
+              className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900"
+              onClick={handleAddUsers}
+            >
               Save
             </button>
           </div>
