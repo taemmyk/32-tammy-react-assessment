@@ -47,23 +47,23 @@ const AdminHomeSection = () => {
           position: validPosition,
         }
       );
+      setUsers([...users, res.data]);
+
       setName("");
       setLastName("");
       setPosition("");
       alert(`${validName} has been added to database.`);
-            // Optimistically update the state immediately with the new user data
-      setUsers([...users, res.data]); // Adding the new user to the users state
     } catch (error) {
       console.error("Error adding users", error);
     }
   };
 
   const handleRemoveUsers = async (id) => {
-    const targetUser = users.find((user) => user.id === id);
+    const targetUser = users.find(user => user.id === id);
     if (!targetUser) return;
     try {
       await axios.delete(`https://jsd5-mock-backend.onrender.com/member/${id}`);
-      setUsers(users.filter((user) => user.id !== id)); // update on ui instantly while letting backend deleting entry
+      setUsers(users.filter(user => user.id !== id)); // update on ui instantly while letting backend deleting entry.
       alert(`${targetUser.name} has been deleted.`);
     } catch (error) {
       console.error("Error deleting user", error);
