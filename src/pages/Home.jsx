@@ -30,10 +30,10 @@ const Home = () => {
       </h1>
       <div className="flex space-x-4 justify-center items-center">
         <Link to="/user-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl">User Home Section</button>
+          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">User Home Section</button>
         </Link>
         <Link to="/admin-home">
-          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl">Admin Home Section</button>
+          <button className="px-4 py-2 bg-lime-600 font-semibold text-lime-100 rounded-2xl hover:text-amber-400 hover:bg-lime-900">Admin Home Section</button>
         </Link>
       </div>
     </div>
